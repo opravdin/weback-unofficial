@@ -30,8 +30,8 @@ CHARGING_STATES = {CHARGE_MODE_CHARGING, CHARGE_MODE_DOCK_CHARGING, CHARGE_MODE_
 DOCKED_STATES = {CHARGE_MODE_IDLE, CHARGE_MODE_CHARGING, CHARGE_MODE_DOCK_CHARGING, CHARGE_MODE_DIRECT_CHARGING}
 
 class CleanRobot(BaseDevice):
-    def __init__(self, name, client, shadow=None, description=None):
-        super().__init__(name, client, shadow=shadow, description=description)
+    def __init__(self, name, client, shadow=None, description=None, nickname=None):
+        super().__init__(name, client, shadow=shadow, description=description, nickname=nickname)
 
     def turn_on(self):
         return self.publish_single('working_status', CLEAN_MODE_AUTO)

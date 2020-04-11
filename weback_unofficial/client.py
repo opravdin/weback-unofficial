@@ -140,12 +140,15 @@ class BaseDevice(object):
     name: str = None
     shadow: list = None
     _description: dict = None
+    nickname: str = None
 
-    def __init__(self, name: str, client: WebackApi, shadow: list = None, description = None):
+    def __init__(self, name: str, client: WebackApi, shadow: list = None, description = None, nickname = None):
         super().__init__()
         self.client = client
         self.name = name
         self.description = description
+        self.nickname = nickname if nickname is not None else self.name
+
         if (shadow):
             self.shadow = shadow
         else:
@@ -163,12 +166,13 @@ class BaseDevice(object):
         self._description = description
         return description
     
-    def publish(self, desired_payload, update = True):
+    def publish(self, desired_payload, update = False):
         resp = self.client.publish_device_msg(self.name, desired_payload)
-        self.update()
+        if update:
+            self.update()
         return resp
     
-    def publish_single(self, attribute, value, update = True):
+    def publish_single(self, attribute, value, update = False):
         return self.publish({attribute: value})
     
     def raise_invalid_value(self, valid):
