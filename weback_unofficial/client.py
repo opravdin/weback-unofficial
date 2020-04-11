@@ -138,7 +138,7 @@ class WebackApi(object):
 class BaseDevice(object):
     client: WebackApi = None
     name: str = None
-    shadow: list = None
+    shadow: list = {}
     _description: dict = None
     nickname: str = None
 
