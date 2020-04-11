@@ -55,7 +55,15 @@ class CleanRobot(BaseDevice):
         if not mode in MOP_SPEEDS:
             self.raise_invalid_value(MOP_SPEEDS)
         self.publish_single('water_level', mode)
-        
+
+    @property
+    def is_available(self):
+        return True if self.shadow.get('connected') == 'false' else True
+
+    @property
+    def clean_tine(self) -> int:
+        return self.shadow.get('clean_time')
+
     @property
     def battery_level(self) -> int:
         return self.shadow.get('battery_level')
