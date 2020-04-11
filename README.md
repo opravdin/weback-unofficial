@@ -52,7 +52,16 @@ client.get_device_description(device_name)
 # Publish message for device
 client.publish_device_msg(device_name, {"working_status": "AutoClean"})
 
-# Method 2: by yourself
+# Method 2: via Vacuum class
+vacuum = CleanRobot(device_name, self.client)
+print(vacuum.state)
+print(vacuum.current_mode)
+
+vacuum.turn_on()
+vacuum.stop()
+vacuum.return_home()
+
+# Method 3: by yourself
 # Get device shadow status
 client = session.client('iot-data')
 resp = client.get_thing_shadow(thingName=device_name)

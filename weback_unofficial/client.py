@@ -134,3 +134,43 @@ class WebackApi(object):
         sess = self.make_session_from_cognito(aws_creds, region)
         self.aws_session = sess
         return sess
+
+class BaseDevice(object):
+    client: WebackApi = None
+    name: str = None
+    shadow: list = None
+    _description: dict = None
+
+    def __init__(self, name: str, client: WebackApi, shadow: list = None, description = None):
+        super().__init__()
+        self.client = client
+        self.name = name
+        self.description = description
+        if (shadow):
+            self.shadow = shadow
+        else:
+            self.update()
+
+    def update(self):
+        shadow = self.client.get_device_shadow(self.name)
+        self.shadow = shadow
+        return shadow
+
+    def description(self):
+        if (self._description is not None):
+            return self.description
+        description = self.client.get_device_description(self.name)
+        self._description = description
+        return description
+    
+    def publish(self, desired_payload, update = True):
+        resp = self.client.publish_device_msg(self.name, desired_payload)
+        self.update()
+        return resp
+    
+    def publish_single(self, attribute, value, update = True):
+        return self.publish({attribute: value})
+    
+    def raise_invalid_value(self, valid):
+        raise Exception("Only this set of values supported: %s" % ", ".join(valid))
+
