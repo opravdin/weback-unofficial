@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="weback-unofficial-opravdin", # Replace with your own username
+    name="weback-unofficial", # Replace with your own username
     version="0.1.0",
     author="Pravdin Oleg",
     author_email="opravdin@gmail.com",
