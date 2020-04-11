@@ -2,6 +2,9 @@
 This client was developed using reverse engineering of the Android application and traffic analysis. There is no guarantee that this API will continue to work. However, it will be quite easy to fix in case of any errors/issues/changes as the WeBack servers are only responsible for gaining access to the API (Amazon Cognito, to be precise).  
 
 ## Usage
+```
+pip3 install weback-unofficial
+```
 ### Authentication
 First of all, you need to choose whether you want to manage your session manually or with this package.
 ```python
