@@ -42,9 +42,17 @@ session = boto3.Session(
 
 ### Manipulating with vacuum robot (example)
 ```python
-devices = self.client.device_list()
+devices = client.device_list()
 device_name = devices[0]['Thing_Name']
+# Method 1: via helper functions
+# Get device shadow status
+client.get_device_shadow(device_name)
+# Get device description: https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThing.html
+client.get_device_description(device_name)
+# Publish message for device
+client.publish_device_msg(device_name, {"working_status": "AutoClean"})
 
+# Method 2: by yourself
 # Get device shadow status
 client = session.client('iot-data')
 resp = client.get_thing_shadow(thingName=device_name)

@@ -82,7 +82,36 @@ class WebackApi(object):
         )
         payload = json.loads(resp['Payload'].read())
         return payload['Request_Cotent']
-        
+
+    def get_device_description(self, device_name, session = None):
+        if (session == None):
+            session = self.get_session()
+        client = session.client('iot')
+        resp = client.describe_thing(thingName=device_name)
+        return resp
+
+    def get_device_shadow(self, device_name, session = None, return_full = False):
+        if (session == None):
+            session = self.get_session()
+        client = session.client('iot-data')
+        resp = client.get_thing_shadow(thingName=device_name)
+        shadow = json.loads(resp['payload'].read())
+        if return_full:
+            return shadow
+        return shadow['state']['reported']
+
+    def publish_device_msg(self, device_name, desired_payload = {}, session = None):
+        if (session == None):
+            session = self.get_session()
+        client = session.client('iot-data')
+        topic = f"$aws/things/{device_name}/shadow/update"
+        payload = {
+            'state': {
+                'desired': desired_payload
+            }
+        }
+        resp = client.publish(topic=topic, qos = 0, payload = json.dumps(payload))
+        return resp
 
     def is_renewal_required(self):
         return True if (self.expiration_time < datetime.datetime.now(self.expiration_time.tzinfo)) else False
@@ -90,6 +119,10 @@ class WebackApi(object):
     def get_session(self) -> boto3.Session:
         if self.aws_session and not self.is_renewal_required():
             return self.aws_session
+
+        if not self.__api_login or not self.__api_password:
+            raise Exception("You should provide login and password via constructor to use session management")
+        
         weback_data = self.auth()
         region = weback_data['Region_Info']
         self.aws_identity_id = weback_data['Identity_Id']

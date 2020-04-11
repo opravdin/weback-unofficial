@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="weback-unofficial", # Replace with your own username
-    version="0.1.0",
+    version="0.2.0",
     author="Pravdin Oleg",
     author_email="opravdin@gmail.com",
     description="Unofficial client for WeBack API",
