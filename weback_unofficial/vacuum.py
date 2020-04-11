@@ -95,6 +95,8 @@ class CleanRobot(BaseDevice):
 
     @property
     def state(self):
+        if self.current_mode == None:
+            return 'unknown'
         if self.is_error:
             return 'error'
         if self.is_cleaning:
