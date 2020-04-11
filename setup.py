@@ -15,7 +15,7 @@ setuptools.setup(
     description="Unofficial client for WeBack API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/opravdin/weback-unofficial",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
