@@ -151,30 +151,31 @@ class BaseDevice(object):
 
         if (shadow):
             self.shadow = shadow
-        else:
-            self.update()
 
     def update(self):
+        """Update device state"""
         shadow = self.client.get_device_shadow(self.name)
         self.shadow = shadow
-        return shadow
+        return self
 
     def description(self):
+        """Get Amazon IoT device description"""
         if (self._description is not None):
             return self.description
         description = self.client.get_device_description(self.name)
         self._description = description
         return description
     
-    def publish(self, desired_payload, update = False):
+    def publish(self, desired_payload):
+        """Publish 'desired' payload via MQTT"""
         resp = self.client.publish_device_msg(self.name, desired_payload)
-        if update:
-            self.update()
         return resp
     
-    def publish_single(self, attribute, value, update = False):
+    def publish_single(self, attribute, value):
+        """Publish single attribute via MQTT."""
         return self.publish({attribute: value})
     
     def raise_invalid_value(self, valid):
+        """Helper: prevent publish unsupported values."""
         raise Exception("Only this set of values supported: %s" % ", ".join(valid))
 

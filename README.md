@@ -54,6 +54,7 @@ client.publish_device_msg(device_name, {"working_status": "AutoClean"})
 
 # Method 2: via Vacuum class
 vacuum = CleanRobot(device_name, self.client)
+vacuum.update()
 print(vacuum.state)
 print(vacuum.current_mode)
 
