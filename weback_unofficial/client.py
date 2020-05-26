@@ -124,6 +124,9 @@ class WebackApi(object):
             raise Exception("You should provide login and password via constructor to use session management")
         
         weback_data = self.auth()
+        if weback_data['Request_Result'] != 'success':
+            raise Exception(f"Could not authenticate. {weback_data['Fail_Reason']}")
+
         region = weback_data['Region_Info']
         self.aws_identity_id = weback_data['Identity_Id']
 
