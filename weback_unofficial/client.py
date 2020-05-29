@@ -34,7 +34,7 @@ class WebackApi(object):
             if self.__api_country_code is None:
                 login = self.__api_login
             else:
-                login = "+" + self.__api_country_code + "-" + self.__api_login
+                login = f"+{self.__api_country_code}-{self.__api_login}"
         if password is None:
             if self.__api_password is None:
                 raise Exception(
