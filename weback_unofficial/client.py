@@ -17,19 +17,24 @@ class WebackApi(object):
     # Creds for WeBack API
     __api_login = None
     __api_password = None
+    __api_country_code = None
 
-    def __init__(self, login: str = None, password: str = None, aws_session: boto3.Session = None, aws_session_expiration: int = None):
+    def __init__(self, login: str = None, password: str = None, country_code: str = None, aws_session: boto3.Session = None, aws_session_expiration: int = None):
         self.aws_session = aws_session
         self.aws_session_expiration = None
         self.__api_login = login
         self.__api_password = password
+        self.__api_country_code = country_code
 
     def auth(self, login: str = None, password: str = None) -> dict:
         if login is None:
             if self.__api_login is None:
                 raise Exception(
                     "Login is not provided via params or class constructor")
-            login = self.__api_login
+            if self.__api_country_code is None:
+                login = self.__api_login
+            else:
+                login = f"+{self.__api_country_code}-{self.__api_login}"
         if password is None:
             if self.__api_password is None:
                 raise Exception(
@@ -124,6 +129,9 @@ class WebackApi(object):
             raise Exception("You should provide login and password via constructor to use session management")
         
         weback_data = self.auth()
+        if weback_data['Request_Result'] != 'success':
+            raise Exception(f"Could not authenticate. {weback_data['Fail_Reason']}")
+
         region = weback_data['Region_Info']
         self.aws_identity_id = weback_data['Identity_Id']
 
