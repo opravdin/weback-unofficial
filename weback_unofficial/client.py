@@ -95,10 +95,14 @@ class WebackApi(object):
         resp = client.describe_thing(thingName=device_name)
         return resp
 
+    def get_endpoint(self, session):
+        iot_client = session.client('iot')
+        return "https://" + iot_client.describe_endpoint(endpointType="iot:Data-ATS").get("endpointAddress")
+
     def get_device_shadow(self, device_name, session = None, return_full = False):
         if (session == None):
             session = self.get_session()
-        client = session.client('iot-data')
+        client = session.client('iot-data', endpoint_url=self.get_endpoint(session))
         resp = client.get_thing_shadow(thingName=device_name)
         shadow = json.loads(resp['payload'].read())
         if return_full:
