@@ -112,7 +112,7 @@ class WebackApi(object):
     def publish_device_msg(self, device_name, desired_payload = {}, session = None):
         if (session == None):
             session = self.get_session()
-        client = session.client('iot-data')
+        client = session.client('iot-data', endpoint_url=self.get_endpoint(session))
         topic = f"$aws/things/{device_name}/shadow/update"
         payload = {
             'state': {
