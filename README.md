@@ -12,6 +12,8 @@ from weback_unofficial.client import WebackApi
 import boto3
 
 # Method 1: make this package keep session itself
+# If you are authenticating via e-mail, you may need to provide login as '+{country_code}-{email}' format, 
+# e.g. '+7-yourmail@address.tld'
 client = WebackApi('+7-1234567890', '<your_password>')
 session = client.get_session() # Returns Amazon Session from boto3 package 
 
@@ -88,7 +90,7 @@ print(resp)
 
 ## API usage cycle description
 I implemented a minimum number of entry points to activate the vacuum cleaner robot. There are definitely other entry points, but they're either not necessary or I don't have devices to check them. 
-* Authorization by username and password. If you use the phone number as a login, provide it in the format {country code}-{number} (e.g. +7-1234567890 if you are from Russia). The server will return the data for access via Amazon Cognito.
+* Authorization by username and password. If you use the phone number as a login, provide it in the format {country code}-{number} (e.g. +7-1234567890 if you are from Russia). If your username is your email, then you may need to still use phone-like format, e.g. +7-yourmail@address.tld. The server will return the data for access via Amazon Cognito.
 * Authorization in Amazon API ([boto3 method](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cognito-identity.html#CognitoIdentity.Client.get_credentials_for_identity))
     * Logins format is {"cognito-identity.amazonaws.com": weback_data['Token']}
 * Device list receiving (via WeBack's Amazon Lambda)
