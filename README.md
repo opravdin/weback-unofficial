@@ -12,6 +12,7 @@ from weback_unofficial.client import WebackApi
 import boto3
 
 # Method 1: make this package keep session itself
+# If you are authenticating via e-mail, you may need to provide login as '+{country_code}-{email}' format, e.g. '+7-youmail@address.tld'
 client = WebackApi('+7-1234567890', '<your_password>')
 session = client.get_session() # Returns Amazon Session from boto3 package 
 
